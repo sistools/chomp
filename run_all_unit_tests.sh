@@ -78,21 +78,50 @@ done
 # ##########################################################
 # main()
 
-mkdir -p $CMakeDir || exit 1
-
-cd $CMakeDir
-
-echo "Executing make and then running all test programs"
-
 status=0
 
-if make; then
+if [ $RunMake -ne 0 ]; then
+
+  if [ $ListOnly -eq 0 ]; then
+
+    echo "Executing build (via command \`$MakeCmd\`) and then running all component and unit test programs"
+
+    mkdir -p $CMakeDir || exit 1
+
+    cd $CMakeDir
+
+    $MakeCmd
+    status=$?
+
+    cd ->/dev/null
+  fi
+else
+
+  if [ ! -d "$CMakeDir" ] || [ ! -f "$CMakeDir/CMakeCache.txt" ] || [ ! -d "$CMakeDir/CMakeFiles" ]; then
+
+    >&2 echo "$ScriptPath: cannot run in '--no-make' mode without a previous successful build step"
+  fi
+fi
+
+if [ $status -eq 0 ]; then
+
+  if [ $ListOnly -ne 0 ]; then
+
+    echo "Listing all component and unit test programs"
+  else
+
+    echo "Running all component and unit test programs"
+  fi
 
   for f in $(find $CMakeDir -type f '(' -name "*${ProjectName}*test*" ')' -exec test -x {} \; -print)
   do
 
-    echo
-    echo "executing $f:"
+    if [ $ListOnly -ne 0 ]; then
+
+      echo "would execute $f:"
+
+      continue
+    fi
 
     if $f; then
 
@@ -104,12 +133,7 @@ if make; then
       break 1
     fi
   done
-else
-
-  status=$?
 fi
-
-cd ->/dev/null
 
 exit $status
 
