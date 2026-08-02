@@ -18,6 +18,7 @@ Strips trailing new line(s) from input
   - [Related projects](#related-projects)
   - [License](#license)
 
+
 ## Introduction
 
 **chomp** is a small, standalone utility program that removes end-of-line sequence from lines in its input.
@@ -48,13 +49,16 @@ $
 
 ## Project Information
 
+
 ### Where to get help
 
 [GitHub Page](https://github.com/sistools/chomp "GitHub Page")
 
+
 ### Contribution guidelines
 
 Defect reports, feature requests, and pull requests are welcome on [the **cstring** GitHub page](https://github.com/sistools/chomp).
+
 
 ### Dependencies
 
