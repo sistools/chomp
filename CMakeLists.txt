@@ -31,7 +31,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 project(chomp
 	DESCRIPTION "chomp is a small, standalone utility program that removes end-of-line sequence from lines in its input."
-	HOMEPAGE_URL "https://github.com/synesissoftware/chomp"
+	HOMEPAGE_URL "https://github.com/sistools/chomp"
 	LANGUAGES C CXX
 )
 
