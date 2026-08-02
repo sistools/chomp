@@ -88,9 +88,6 @@ update_deps.cmd
 build/makefile.tmpl
 build/makefile.tools.xml
 
-clasp.a
-libclasp.a
-libchomp.a
 chomp
 chomp_test
 
