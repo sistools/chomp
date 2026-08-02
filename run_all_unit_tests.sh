@@ -11,11 +11,12 @@ MakeCmd=${SIS_CMAKE_COMMAND:-make}
 # command-line handling
 
 while [[ $# -gt 0 ]]; do
-    case $1 in
-        --help)
 
-            [ -f "$Dir/.sis/script_info_lines.txt" ] && cat "$Dir/.sis/script_info_lines.txt"
-            cat << EOF
+  case $1 in
+    --help)
+
+      [ -f "$Dir/.sis/script_info_lines.txt" ] && cat "$Dir/.sis/script_info_lines.txt"
+      cat << EOF
 Runs all (matching) unit-test programs
 
 $ScriptPath [ ... flags/options ... ]
@@ -32,26 +33,26 @@ Flags/options:
 
 EOF
 
-            exit 0
-            ;;
-        *)
+      exit 0
+      ;;
+    *)
 
-            >&2 echo "$ScriptPath: unrecognised argument '$1'; use --help for usage"
+      >&2 echo "$ScriptPath: unrecognised argument '$1'; use --help for usage"
 
-            exit 1
-            ;;
-    esac
+      exit 1
+      ;;
+  esac
 
-    shift
+  shift
 done
 
 
 # ##########################################################
 # main()
 
-mkdir -p $CMakePath || exit 1
+mkdir -p $CMakeDir || exit 1
 
-cd $CMakePath
+cd $CMakeDir
 
 echo "Executing make and then running all test programs"
 
@@ -59,25 +60,25 @@ status=0
 
 if make; then
 
-    for f in $(find $Dir -type f -perm +111 '(' -name '*chomp*test*' ')')
-    do
+  for f in $(find $Dir -type f -perm +111 '(' -name '*chomp*test*' ')')
+  do
 
-        echo
-        echo "executing $f:"
+    echo
+    echo "executing $f:"
 
-        if $f; then
+    if $f; then
 
-            :
-        else
+      :
+    else
 
-            status=$?
+      status=$?
 
-            break 1
-        fi
-    done
+      break 1
+    fi
+  done
 else
 
-    status=$?
+  status=$?
 fi
 
 cd ->/dev/null

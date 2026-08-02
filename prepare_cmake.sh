@@ -3,7 +3,8 @@
 ScriptPath=$0
 Dir=$(cd $(dirname "$ScriptPath"); pwd)
 Basename=$(basename "$ScriptPath")
-CMakePath=$Dir/_build
+CMakeDir=${SIS_CMAKE_BUILD_DIR:-$Dir/_build}
+MakeCmd=${SIS_CMAKE_COMMAND:-make}
 
 
 CMakeTestingDisabled=0
@@ -16,27 +17,27 @@ RunMake=0
 # command-line handling
 
 while [[ $# -gt 0 ]]; do
-    case $1 in
-        -v|--cmake-verbose-makefile)
+  case $1 in
+    -v|--cmake-verbose-makefile)
 
-            CMakeVerboseMakefile=1
-            ;;
-        -d|--debug-configuration)
+      CMakeVerboseMakefile=1
+      ;;
+    -d|--debug-configuration)
 
-            Configuration=Debug
-            ;;
-        -T|--disable-testing)
+      Configuration=Debug
+      ;;
+    -T|--disable-testing)
 
-            CMakeTestingDisabled=1
-            ;;
-        -m|--run-make)
+      CMakeTestingDisabled=1
+      ;;
+    -m|--run-make)
 
-            RunMake=1
-            ;;
-        --help)
+      RunMake=1
+      ;;
+    --help)
 
-            [ -f "$Dir/.sis/script_info_lines.txt" ] && cat "$Dir/.sis/script_info_lines.txt"
-            cat << EOF
+      [ -f "$Dir/.sis/script_info_lines.txt" ] && cat "$Dir/.sis/script_info_lines.txt"
+      cat << EOF
 Creates/reinitialises the CMake build script(s)
 
 $ScriptPath [ ... flags/options ... ]
@@ -72,31 +73,30 @@ Flags/options:
 
 EOF
 
-            exit 0
-            ;;
-        *)
+      exit 0
+      ;;
+    *)
 
-            >&2 echo "$ScriptPath: unrecognised argument '$1'; use --help for usage"
+      >&2 echo "$ScriptPath: unrecognised argument '$1'; use --help for usage"
 
-            exit 1
-            ;;
-    esac
+      exit 1
+      ;;
+  esac
 
-    shift
+  shift
 done
 
 
 # ##########################################################
 # main()
 
-mkdir -p $CMakePath || exit 1
+mkdir -p $CMakeDir || exit 1
 
-cd $CMakePath
+cd $CMakeDir
 
 echo "Executing CMake"
 
 if [ $CMakeTestingDisabled -eq 0 ]; then CMakeBuildTestingFlag="ON" ; else CMakeBuildTestingFlag="OFF" ; fi
-
 if [ $CMakeVerboseMakefile -eq 0 ]; then CMakeVerboseMakefileFlag="OFF" ; else CMakeVerboseMakefileFlag="ON" ; fi
 
 cmake \
@@ -109,19 +109,19 @@ status=0
 
 if [ $RunMake -ne 0 ]; then
 
-    echo "Executing make"
+  echo "Executing make"
 
-    make
+  make
 
-    status=$?
+  status=$?
 fi
 
 cd ->/dev/null
 
 if [ $CMakeVerboseMakefile -ne 0 ]; then
 
-    echo -e "contents of $CMakePath:"
-    ls -al $CMakePath
+  echo -e "contents of $CMakeDir:"
+  ls -al $CMakeDir
 fi
 
 exit $status
