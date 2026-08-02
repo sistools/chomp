@@ -25,6 +25,30 @@ Files=(
 
 
 # ##########################################################
+# operating environment detection
+
+OsName="$(uname -s)"
+case "${OsName}" in
+  CYGWIN*|MINGW*|MSYS_NT*)
+
+    Directories+=(
+      ARM64
+      Win32
+      x64
+    )
+    Files+=(
+      "*.filters"
+      "*.sln"
+      "*.vcxproj"
+    )
+    ;;
+  *)
+
+    ;;
+esac
+
+
+# ##########################################################
 # command-line handling
 
 while [[ $# -gt 0 ]]; do
@@ -93,18 +117,25 @@ else
     num_dirs_removed=$((num_dirs_removed+1))
   done
 
+  cd "$CMakeDir"
+
   for f in ${Files[@]}
   do
-    fq_file_path="$CMakeDir/$f"
 
-    [ -f "$fq_file_path" ] || continue
+    for fq_file_path in $f
+    do
 
-    echo "removing file '$f'"
+      [ -f "$fq_file_path" ] || continue
 
-    rm -f "$fq_file_path"
+      echo "removing file '$fq_file_path'"
 
-    num_files_removed=$((num_files_removed+1))
+      rm -f "$fq_file_path"
+
+      num_files_removed=$((num_files_removed+1))
+    done
   done
+
+  cd ->/dev/null
 
   if [ 0 -eq $num_dirs_removed ] && [ 0 -eq $num_files_removed ]; then
 
