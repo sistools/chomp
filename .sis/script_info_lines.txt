@@ -1,0 +1,2 @@
+chomp is a small, standalone utility program that removes end-of-line sequence from lines in its input
+Copyright (c) 2020-2026, Matthew Wilson and Synesis Information Systems
