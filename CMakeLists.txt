@@ -242,6 +242,8 @@ target_compile_options(${PROJECT_NAME_LOWER}
 		>
 		$<$<CXX_COMPILER_ID:MSVC>:
 			/WX /W4
+
+			/wd4996
 		>
 )
 
@@ -282,6 +284,8 @@ if(BUILD_TESTING)
 			>
 			$<$<CXX_COMPILER_ID:MSVC>:
 				/WX /W4
+
+				/wd4996
 			>
 	)
 
