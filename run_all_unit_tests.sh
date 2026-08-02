@@ -13,6 +13,10 @@ else
   DefaultMakeCmd=make
 fi
 MakeCmd=${SIS_CMAKE_MAKE_COMMAND:-${SIS_CMAKE_COMMAND:-$DefaultMakeCmd}}
+ProjectName=$(cat "$Dir/.sis/project_name.txt")
+
+ListOnly=0
+RunMake=1
 
 
 # ##########################################################
@@ -21,17 +25,33 @@ MakeCmd=${SIS_CMAKE_MAKE_COMMAND:-${SIS_CMAKE_COMMAND:-$DefaultMakeCmd}}
 while [[ $# -gt 0 ]]; do
 
   case $1 in
+    --list-only|-l)
+
+      ListOnly=1
+      ;;
+    --no-make|-M)
+
+      RunMake=0
+      ;;
     --help)
 
       [ -f "$Dir/.sis/script_info_lines.txt" ] && cat "$Dir/.sis/script_info_lines.txt"
       cat << EOF
-Runs all (matching) unit-test programs
+Runs all (matching) component and unit test programs
 
 $ScriptPath [ ... flags/options ... ]
 
 Flags/options:
 
     behaviour:
+
+    -l
+    --list-only
+        lists the target programs but does not execute them
+
+    -M
+    --no-make
+        does not execute CMake and make before running tests
 
 
     standard flags:
@@ -68,7 +88,7 @@ status=0
 
 if make; then
 
-  for f in $(find $Dir -type f -perm +111 '(' -name '*chomp*test*' ')')
+  for f in $(find $CMakeDir -type f '(' -name "*${ProjectName}*test*" ')' -exec test -x {} \; -print)
   do
 
     echo
