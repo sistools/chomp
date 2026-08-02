@@ -3,6 +3,14 @@
 Strips trailing new line(s) from input
 
 
+![C](https://img.shields.io/badge/C-00599C?style=flat&logo=c&logoColor=white)
+![C++](https://img.shields.io/badge/C%2B%2B-00599C?style=flat&logo=c%2B%2B&logoColor=white)
+[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+[![GitHub release](https://img.shields.io/github/v/release/sistools/chomp.svg)](https://github.com/sistools/chomp/releases/latest)
+[![Last Commit](https://img.shields.io/github/last-commit/sistools/chomp)](https://github.com/sistools/chomp/commits/master)
+[![CI](https://github.com/sistools/chomp/actions/workflows/ci.yml/badge.svg)](https://github.com/sistools/chomp/actions/workflows/ci.yml)
+
+
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
