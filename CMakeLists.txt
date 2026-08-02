@@ -5,7 +5,7 @@
 # Purpose:  Top-level CMake lists file for chomp
 #
 # Created:  2nd April 2021
-# Updated:  2nd August 2026
+# Updated:  3rd August 2026
 #
 # ######################################################################## #
 
@@ -183,7 +183,16 @@ if(BUILD_TESTING)
 		clasp
 		cstring
 	)
+else(BUILD_TESTING)
+
+	message("-- disabled building of tests - define BUILD_TESTING to enable")
 endif(BUILD_TESTING)
+
+
+# ##########################################################
+# completion
+
+message(NOTICE "Generating CMake build scripts for ${PROJECT_NAME} ${PROJECT_VERSION}, for C${CMAKE_C_STANDARD} C++${CMAKE_CXX_STANDARD}")
 
 
 # ############################## end of file ############################# #
