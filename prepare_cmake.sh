@@ -3,41 +3,58 @@
 ScriptPath=$0
 Dir=$(cd $(dirname "$ScriptPath"); pwd)
 Basename=$(basename "$ScriptPath")
-CMakePath=$Dir/_build
+CMakeDir=${SIS_CMAKE_BUILD_DIR:-$Dir/_build}
+if [[ -n "$MSYSTEM" ]]; then
 
+  DefaultMakeCmd=mingw32-make.exe
+  MinGW=1
+else
 
-CMakeTestingDisabled=0
-CMakeVerboseMakefile=0
+  DefaultMakeCmd=make
+fi
+MakeCmd=${SIS_CMAKE_MAKE_COMMAND:-${SIS_CMAKE_COMMAND:-$DefaultMakeCmd}}
+
 Configuration=Release
+MSVC_MT=0
+MinGW="${MinGW:=0}"
 RunMake=0
+TestingDisabled=0
+VerboseMakefile=0
 
 
 # ##########################################################
 # command-line handling
 
 while [[ $# -gt 0 ]]; do
-    case $1 in
-        -v|--cmake-verbose-makefile)
+  case $1 in
+    --cmake-verbose-makefile|-v)
 
-            CMakeVerboseMakefile=1
-            ;;
-        -d|--debug-configuration)
+      VerboseMakefile=1
+      ;;
+    --debug-configuration|-d)
 
-            Configuration=Debug
-            ;;
-        -T|--disable-testing)
+      Configuration=Debug
+      ;;
+    --disable-testing|-T)
 
-            CMakeTestingDisabled=1
-            ;;
-        -m|--run-make)
+      TestingDisabled=1
+      ;;
+    --mingw)
 
-            RunMake=1
-            ;;
-        --help)
+      MinGW=1
+      ;;
+    --msvc-mt)
 
-            cat << EOF
-chomp is a small, standalone utility program that removes end-of-line sequence from lines in its input
-Copyright (c) 2020-2024, Matthew Wilson and Synesis Information Systems
+      MSVC_MT=1
+      ;;
+    --run-make|-m)
+
+      RunMake=1
+      ;;
+    --help)
+
+      [ -f "$Dir/.sis/script_info_lines.txt" ] && cat "$Dir/.sis/script_info_lines.txt"
+      cat << EOF
 Creates/reinitialises the CMake build script(s)
 
 $ScriptPath [ ... flags/options ... ]
@@ -48,8 +65,8 @@ Flags/options:
 
     -v
     --cmake-verbose-makefile
-        configures CMake to run verbosely (by setting
-        CMAKE_VERBOSE_MAKEFILE=ON)
+        configures CMake to run verbosely (by setting CMAKE_VERBOSE_MAKEFILE
+        to be ON)
 
     -d
     --debug-configuration
@@ -58,8 +75,15 @@ Flags/options:
 
     -T
     --disable-testing
-        disables building of tests (by setting BUILD_TESTING=OFF). This is
-        necessary, for example, when installing on a system that does not
+        disables building of tests (by setting BUILD_TESTING=OFF)
+
+    --mingw
+        uses explicitly the "MinGW Makefiles" generator, and defaults the
+        make-command to "mingw32-make.exe"
+
+    --msvc-mt
+        when using Visual C++ (MSVC), the static runtime library will be
+        selected; the default is the dynamic runtime library
 
     -m
     --run-make
@@ -73,56 +97,70 @@ Flags/options:
 
 EOF
 
-            exit 0
-            ;;
-        *)
+      exit 0
+      ;;
+    *)
 
-            >&2 echo "$ScriptPath: unrecognised argument '$1'; use --help for usage"
+      >&2 echo "$ScriptPath: unrecognised argument '$1'; use --help for usage"
 
-            exit 1
-            ;;
-    esac
+      exit 1
+      ;;
+  esac
 
-    shift
+  shift
 done
 
 
 # ##########################################################
 # main()
 
-mkdir -p $CMakePath || exit 1
+mkdir -p $CMakeDir || exit 1
 
-cd $CMakePath
+cd $CMakeDir
 
-echo "Executing CMake"
+echo "Executing CMake (in ${CMakeDir})"
 
-if [ $CMakeTestingDisabled -eq 0 ]; then CMakeBuildTestingFlag="ON" ; else CMakeBuildTestingFlag="OFF" ; fi
+if [ $MSVC_MT -eq 0 ]; then CMakeMsvcMtFlag="OFF" ; else CMakeMsvcMtFlag="ON" ; fi
+if [ $TestingDisabled -eq 0 ]; then CMakeBuildTestingFlag="ON" ; else CMakeBuildTestingFlag="OFF" ; fi
+if [ $VerboseMakefile -eq 0 ]; then CMakeVerboseMakefileFlag="OFF" ; else CMakeVerboseMakefileFlag="ON" ; fi
 
-if [ $CMakeVerboseMakefile -eq 0 ]; then CMakeVerboseMakefileFlag="OFF" ; else CMakeVerboseMakefileFlag="ON" ; fi
+if [ $MinGW -ne 0 ]; then
 
-cmake \
+  cmake \
+    -DBUILD_TESTING:BOOL=$CMakeBuildTestingFlag \
+    -DCMAKE_BUILD_TYPE=$Configuration \
+    -G "MinGW Makefiles" \
+    -S $Dir \
+    -B $CMakeDir \
+    || (cd ->/dev/null ; exit 1)
+else
+
+  cmake \
     -DBUILD_TESTING:BOOL=$CMakeBuildTestingFlag \
     -DCMAKE_BUILD_TYPE=$Configuration \
     -DCMAKE_VERBOSE_MAKEFILE:BOOL=$CMakeVerboseMakefileFlag \
-    .. || (cd ->/dev/null ; exit 1)
+    -DMSVC_USE_MT:BOOL=$CMakeMsvcMtFlag \
+    -S $Dir \
+    -B $CMakeDir \
+    || (cd ->/dev/null ; exit 1)
+fi
 
 status=0
 
 if [ $RunMake -ne 0 ]; then
 
-    echo "Executing make"
+  echo "Executing build (via command \`$MakeCmd\`)"
 
-    make
-
-    status=$?
+  $MakeCmd
+  status=$?
 fi
 
 cd ->/dev/null
 
-if [ $CMakeVerboseMakefile -ne 0 ]; then
+if [ $VerboseMakefile -ne 0 ]; then
 
-    echo -e "contents of $CMakePath:"
-    ls -al $CMakePath
+  echo -e "contents of $CMakeDir:"
+  ls -al $CMakeDir
 fi
 
 exit $status
