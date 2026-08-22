@@ -10,9 +10,8 @@ Strips trailing new line(s) from input
 [![CI](https://github.com/sistools/chomp/actions/workflows/ci.yml/badge.svg)](https://github.com/sistools/chomp/actions/workflows/ci.yml)
 
 
-## Table of Contents
+## Table of Contents <!-- omit in toc -->
 
-- [Table of Contents](#table-of-contents)
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Components](#components)
