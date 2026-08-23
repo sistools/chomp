@@ -1,0 +1,40 @@
+.\" Copyright (c) 2020-2026, Matthew Wilson and Synesis Information Systems
+.\"
+.TH CHOMP 1 "August 2026" "chomp 0.1.1" "User Commands"
+.SH NAME
+chomp \- remove trailing newline characters from input
+.SH SYNOPSIS
+.B chomp
+[\fIOPTIONS\fR]
+[\fIINPUT\fR [\fIOUTPUT\fR]]
+.SH DESCRIPTION
+.B chomp
+removes trailing end-of-line sequences from input. Input and output default
+to standard input and standard output when omitted or specified as
+.BR \- .
+.SH OPTIONS
+.TP
+.BR \-B ", " \-\-no\-chomp\-back
+Suppress removal of trailing end-of-line sequences.
+.TP
+.BR \-f ", " \-\-chomp\-front
+Remove leading end-of-line sequences.
+.TP
+.BR \-l ", " \-\-flatten
+Flatten multiple consecutive end-of-line sequences.
+.TP
+.B \-\-help
+Display help and exit.
+.TP
+.B \-\-version
+Display version information and exit.
+.SH SEE ALSO
+.BR lstrip (1),
+.BR rstrip (1)
+.SH REPORTING BUGS
+Report defects and feature requests at
+https://github.com/sistools/chomp.
+.SH AUTHOR
+Matthew Wilson and Synesis Information Systems
+.br
+Copyright (c) 2020\-2026, Matthew Wilson and Synesis Information Systems

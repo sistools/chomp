@@ -1,10 +1,9 @@
 # chomp - TODO list
 
 
-## chomp 0.8.x TODOs:
+## chomp 0.1.x TODOs:
 
-* \<none>
+* Set GitHub repository topics: `c`, `cli`, `command-line`, `cmake`, `stlsoft`, `text-processing`, `filter`, `string-manipulation`, `bsd-3-clause`, `sistools`;
 
 
 <!-- ########################### end of file ########################### -->
-
