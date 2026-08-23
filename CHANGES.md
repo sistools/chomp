@@ -1,7 +1,7 @@
 # chomp - Changes <!-- omit in toc -->
 
 
-## 0.1.1 - 3rd August 2026
+## 0.1.1 - 24th August 2026
 
 * Added modular GitHub Actions CI (**ci.yml** / **ci-cell.yml**) with Linux/macOS/Windows matrix, dependency install, tests, and install verification;
 * Added Doxygen API documentation (**Doxyfile**, **doc/mainpage.md**, **generate_doxygen.sh**) and a section-1 man page (**doc/chomp.1**);
