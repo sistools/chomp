@@ -107,7 +107,7 @@ Flags/options:
     behaviour:
 
     --c-standard {99|11|17|23}
-        sets CMAKE_C_STANDARD (default is 11)
+        sets CMAKE_C_STANDARD (default is 17)
 
     -v
     --cmake-verbose-makefile

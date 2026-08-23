@@ -4,9 +4,9 @@
 - [Introduction](#introduction)
 - [Installation by CMake](#installation-by-cmake)
   - [CLASP](#clasp)
-  - [Catch2 - required only for testing chomp](#catch2---required-only-for-testing-chomp)
+  - [Catch2 - required only for testing](#catch2---required-only-for-testing)
   - [STLSoft](#stlsoft)
-  - [xTests - required only for testing chomp](#xtests---required-only-for-testing-chomp)
+  - [xTests - required only for testing](#xtests---required-only-for-testing)
 - [Installation by other means](#installation-by-other-means)
 
 
@@ -15,7 +15,7 @@
 The **chomp** program (implemented in [**entry.c**](./entry.c)) is implemented in terms of:
 
 * [**CLASP**](https://github.com/synesissoftware/CLASP) - for command-line handling;
-* [**STLSoft**](https://github.com/synesissoftware/STLSoft-1.10) - for CLI utility functions;
+* [**STLSoft**](https://github.com/synesissoftware/STLSoft) - for CLI utility functions;
 
 Further, the **chomp_test** program (implemented in [**chomp_test.cpp**](./chomp_test.cpp)), which is used only to test the **chomp** library, also depends on:
 
@@ -44,7 +44,7 @@ $ sudo cmake --install ./_build --config Release
 ```
 
 
-### Catch2 - required only for testing chomp
+### Catch2 - required only for testing
 
 **Catch2** is "_A modern, C++-native, test framework for unit-tests, TDD and BDD - using C++14, C++17 and later (C++11 support is in v2.x branch, and C++03 on the Catch1.x branch)_"
 
@@ -64,19 +64,28 @@ $ sudo cmake --build _build/ --target install
 
 The **STLSoft** libraries provide a wide range of compiler/library discrimination and compatibility facilities, operating system API façades, and a number of extended components over and above what is provided in the standard library.
 
-**STLSoft** is obtained from **https://github.com/synesissoftware/STLSoft-1.10**, and it provides the means to install via **CMake**, as in the following:
+**STLSoft** or later is obtained from **https://github.com/synesissoftware/STLSoft**, and it provides the means to install via **CMake**, as in the following:
 
 ```bash
 $ mkdir -p ~/open-source
 $ cd ~/open-source
-$ git clone https://github.com/synesissoftware/STLSoft-1.10
-$ cd ~/open-source/STLSoft-1.10
+$ git clone https://github.com/synesissoftware/STLSoft
+$ cd ~/open-source/STLSoft
 $ ./prepare_cmake.sh -m
 $ sudo cmake --install ./_build --config Release
 ```
 
+When **STLSoft** has not been installed, **chomp** can use an existing source
+tree instead. Supply its root directory through the **prepare_cmake.sh** option
+`--stlsoft-root-dir` or `-s`, or through the `STLSOFT` environment variable.
 
-### xTests - required only for testing chomp
+```bash
+$ ./prepare_cmake.sh --stlsoft-root-dir ~/open-source/STLSoft
+$ STLSOFT=~/open-source/STLSoft ./prepare_cmake.sh -T
+```
+
+
+### xTests - required only for testing
 
 **xTests** is a simple, easy-to-use, efficient testing library, for C, C++. It's not particularly great, but it's small and portable enough to be bundled with other, more important, libraries.
 

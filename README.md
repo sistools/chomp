@@ -63,7 +63,7 @@ $
 
 ### Contribution guidelines
 
-Defect reports, feature requests, and pull requests are welcome on [the **cstring** GitHub page](https://github.com/sistools/chomp).
+Defect reports, feature requests, and pull requests are welcome on [the **chomp** GitHub page](https://github.com/sistools/chomp).
 
 
 ### Dependencies
@@ -71,7 +71,7 @@ Defect reports, feature requests, and pull requests are welcome on [the **cstrin
 **chomp** depends on:
 
 * [**CLASP**](https://github.com/synesissoftware/CLASP);
-* [**STLSoft 1.10**](https://github.com/synesissoftware/STLSoft-1.10);
+* [**STLSoft**](https://github.com/synesissoftware/STLSoft);
 
 
 #### Tests-only Dependencies
