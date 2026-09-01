@@ -143,7 +143,7 @@ run(
 
         if (NULL == out)
         {
-            if (NULL != in)
+            if (NULL != in_path)
             {
                 fclose(in);
             }
@@ -156,13 +156,30 @@ run(
 
     rc = sistool_chomp(in, out, flags);
 
-    if (NULL != in)
+    if (NULL != in_path)
     {
         fclose(in);
     }
-    if (NULL != out)
+
+    if (NULL != out_path)
     {
-        fclose(out);
+        if (0 != fclose(out) &&
+            EXIT_SUCCESS == rc)
+        {
+            fprintf(stderr, "%.*s: could not write to file '%s': %s\n", SIS_DOTSTAR(args->programName), out_path, strerror(errno));
+
+            rc = EXIT_FAILURE;
+        }
+    }
+    else
+    {
+        if (0 != fflush(out) &&
+            EXIT_SUCCESS == rc)
+        {
+            fprintf(stderr, "%.*s: could not write to standard output: %s\n", SIS_DOTSTAR(args->programName), strerror(errno));
+
+            rc = EXIT_FAILURE;
+        }
     }
 
     return rc;
