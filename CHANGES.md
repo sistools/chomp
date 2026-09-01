@@ -1,19 +1,11 @@
 # chomp - Changes <!-- omit in toc -->
 
 
-## 0.2.2 - 1st September 2026
-
-* Replaced the deprecated **CLASP** alias terminology with `clasp_specification_t` and **`CLASP_SPECIFICATION_ARRAY_TERMINATOR`**;
-
-
-## 0.2.1 - 1st September 2026
-
-* Fixed closing of **stdin** / **stdout** when input or output is a pipe;
-* Output-write failures are now reported and reflected in the exit code;
-
-
 ## 0.2.0 - 1st September 2026
 
+* Replaced the deprecated **CLASP** alias terminology with `clasp_specification_t` and **`CLASP_SPECIFICATION_ARRAY_TERMINATOR`**;
+* Fixed closing of **stdin** / **stdout** when input or output is a pipe;
+* Output-write failures are now reported and reflected in the exit code;
 * Consume **sistools-common-c** for `--help` / `--version` via **`stcc_show_help()`** / **`stcc_show_version()`**;
 * Version output now uses **Diagnosticism** version strings (via **sistools-common-c**);
 * Added **`SISTOOL_CHOMP_VER_ALPHABETA`**;
