@@ -1,6 +1,12 @@
 # chomp - Changes <!-- omit in toc -->
 
 
+## 0.2.1 - 1st September 2026
+
+* Fixed closing of **stdin** / **stdout** when input or output is a pipe;
+* Output-write failures are now reported and reflected in the exit code;
+
+
 ## 0.2.0 - 1st September 2026
 
 * Consume **sistools-common-c** for `--help` / `--version` via **`stcc_show_help()`** / **`stcc_show_version()`**;

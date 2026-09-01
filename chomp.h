@@ -4,7 +4,7 @@
 
 #define SISTOOL_CHOMP_VER_MAJOR         0
 #define SISTOOL_CHOMP_VER_MINOR         2
-#define SISTOOL_CHOMP_VER_PATCH         0
+#define SISTOOL_CHOMP_VER_PATCH         1
 #define SISTOOL_CHOMP_VER_ALPHABETA     0xFF
 
 
