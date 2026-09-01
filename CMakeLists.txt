@@ -5,7 +5,7 @@
 # Purpose:  Top-level CMake lists file for chomp
 #
 # Created:  2nd April 2021
-# Updated:  3rd August 2026
+# Updated:  1st September 2026
 #
 # ######################################################################## #
 
@@ -178,6 +178,16 @@ message("-- CMake package CLASP found (version ${CLASP_VERSION}; ${CLASP_REQUIRE
 
 
 # ############################
+# sistools-common-c
+
+set(sistools-common-c_REQUIRED_VERSION_ 0.1)
+
+find_package(sistools-common-c ${sistools-common-c_REQUIRED_VERSION_} REQUIRED)
+
+message("-- CMake package sistools-common-c found (version ${sistools-common-c_VERSION}; ${sistools-common-c_REQUIRED_VERSION_} requested)")
+
+
+# ############################
 # STLSoft
 
 if(DEFINED STLSOFT)
@@ -254,7 +264,10 @@ target_compile_options(${PROJECT_NAME_LOWER}
 )
 
 target_link_libraries(${PROJECT_NAME_LOWER}
-	CLASP::core
+	# CLASP and Diagnosticism come in via sistools-common-c::core
+	# (PUBLIC); listing CLASP::core again duplicates libclasp.a on the
+	# link line (Apple ld warning).
+	sistools-common-c::core
 )
 
 install(TARGETS ${PROJECT_NAME_LOWER}

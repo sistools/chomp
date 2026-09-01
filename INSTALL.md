@@ -12,6 +12,7 @@
 The **chomp** program (implemented in [**entry.c**](./entry.c)) is implemented in terms of:
 
 * [**CLASP**](https://github.com/synesissoftware/CLASP) - for command-line handling;
+* [**sistools-common-c**](https://github.com/sistools/sistools-common-c) - for shared `--help` / `--version` usage helpers;
 * [**STLSoft**](https://github.com/synesissoftware/STLSoft) - for CLI utility functions;
 
 Further, the **chomp_test** program (implemented in [**chomp_test.cpp**](./chomp_test.cpp)), which is used only to test the **chomp** library, also depends on:
